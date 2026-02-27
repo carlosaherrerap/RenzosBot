@@ -4,7 +4,8 @@ import path from "path";
 import { generateTicketPDF } from "./pdf.js";
 import { config } from "./config.js";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const printer: any = require("pdf-to-printer");
 
 export async function printOrderTicket(order: {
