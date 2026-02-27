@@ -10,4 +10,4 @@ RUN npm run prisma:generate
 RUN npm run build
 ENV PORT=3001
 EXPOSE 3001
-CMD ["node", "dist/index.js"]
+CMD npx prisma db push && node dist/index.js

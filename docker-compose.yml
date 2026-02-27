@@ -32,8 +32,8 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - backend_session:/app/session
-
+      - ./backend/session:/app/session
+  
   web:
     build:
       context: ./web
@@ -66,4 +66,3 @@ services:
 
 volumes:
   db_data:
-  backend_session:
