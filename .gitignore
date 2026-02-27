@@ -1,0 +1,14 @@
+./backend/node_modules
+./web/node_modules
+./web/.next
+.\backend\node_modules
+.\web\node_modules
+.\web\.next
+.env
+
+backend/node_modules
+web/node_modules
+web/.next
+backend\node_modules
+web\node_modules
+web\.next

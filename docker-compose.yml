@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      BAILEYS_AUTH_DIR: /app/session
+      STT_URL: http://stt:8002
+      VISION_URL: http://vision:8001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    volumes:
+      - backend_session:/app/session
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+  vision:
+    build:
+      context: ./vision
+      dockerfile: Dockerfile
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8001:8001"
+
+  stt:
+    build:
+      context: ./stt
+      dockerfile: Dockerfile
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8002:8002"
+
+volumes:
+  db_data:
+  backend_session:
