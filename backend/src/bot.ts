@@ -1,6 +1,6 @@
 import { makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, WAMessageContent, downloadContentFromMessage } from "@whiskeysockets/baileys";
-import { config } from "./config";
-import { prisma } from "./db";
+import { config } from "./config.js";
+import { prisma } from "./db.js";
 import fs from "fs";
 import axios from "axios";
 
@@ -115,7 +115,7 @@ export async function startBot() {
           await respondWithMode(jid, mode, reply);
           return;
         }
-      } catch {}
+      } catch { }
       await respondWithMode(jid, mode, "No encontré coincidencias con la imagen.");
       return;
     }
@@ -131,7 +131,7 @@ export async function startBot() {
           await respondWithMode(jid, mode, reply);
           return;
         }
-      } catch {}
+      } catch { }
       await respondWithMode(jid, mode, "No encontré coincidencias, ¿puedes describir mejor lo que buscas?");
       return;
     }

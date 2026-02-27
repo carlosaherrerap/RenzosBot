@@ -1,8 +1,8 @@
 import os from "os";
 import fs from "fs";
 import path from "path";
-import { generateTicketPDF } from "./pdf";
-import { config } from "./config";
+import { generateTicketPDF } from "./pdf.js";
+import { config } from "./config.js";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const printer: any = require("pdf-to-printer");
@@ -21,5 +21,5 @@ export async function printOrderTicket(order: {
   await printer.print(file, options);
   try {
     await fs.promises.unlink(file);
-  } catch {}
+  } catch { }
 }

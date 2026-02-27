@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import { config } from "./config";
-import { startBot, getCurrentQR, sendTextToPhone, sendImageToPhone } from "./bot";
-import { prisma } from "./db";
-import { generateStatusImage, generateReceiptImage } from "./image";
-import { generateTicketPDF } from "./pdf";
-import { printOrderTicket } from "./print";
+import { config } from "./config.js";
+import { startBot, getCurrentQR, sendTextToPhone, sendImageToPhone } from "./bot.js";
+import { prisma } from "./db.js";
+import { generateStatusImage, generateReceiptImage } from "./image.js";
+import { generateTicketPDF } from "./pdf.js";
+import { printOrderTicket } from "./print.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import axios from "axios";
@@ -94,7 +94,7 @@ app.post("/orders/reserve", async (req, res) => {
         total: Number(order.total)
       });
       await sendImageToPhone(order.customer.phone, img, "Comprobante de Reserva");
-    } catch {}
+    } catch { }
     res.json(order);
   } catch (e) {
     res.status(500).json({ error: "error reservando pedido" });
@@ -115,7 +115,7 @@ app.post("/orders/:id/status", auth, async (req, res) => {
       total: Number(order.total)
     });
     await sendImageToPhone(phone, statusImg, `Pedido ${status}`);
-  } catch {}
+  } catch { }
   if (status === "TERMINADO") {
     await sendTextToPhone(phone, "Tu pedido ya está listo. ¡Gracias por tu preferencia!");
   } else if (status === "EN_PROCESO") {
@@ -148,7 +148,7 @@ app.post("/payments/yape/webhook", async (req, res) => {
         .map(i => ({ product: i.product!, quantity: i.quantity, price: i.price })),
       total: Number(order.total)
     });
-  } catch {}
+  } catch { }
   res.json({ ok: true });
 });
 
@@ -224,6 +224,6 @@ app.post("/vision/similar", auth, async (req, res) => {
     res.status(500).json({ items: [] });
   }
 });
-app.listen(config.port, () => {});
+app.listen(config.port, () => { });
 
 startBot();
