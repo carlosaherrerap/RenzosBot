@@ -12,3 +12,6 @@ web/.next
 backend\node_modules
 web\node_modules
 web\.next
+temp_auto_push.bat
+temp_interactive_push.bat
+branch_structure.json
